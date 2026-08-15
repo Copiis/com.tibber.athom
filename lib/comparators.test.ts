@@ -139,7 +139,9 @@ describe('comparators', () => {
 
   describe('lowestPricesWithinTimeFrame', () => {
     test('still matches after price refresh clones Moment instances', () => {
-      const now = moment.tz('Europe/Oslo');
+      // Mid-day Oslo so the 00:00–23:59 window always contains `now`
+      // (parseTimeString builds start/end on the current local date).
+      const now = moment.tz('Europe/Oslo').startOf('day').hour(12).minute(17);
       const prices: TransformedPriceEntry[] = [];
       for (let hour = 0; hour < 24; hour += 1) {
         prices.push({
